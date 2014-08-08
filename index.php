@@ -103,11 +103,14 @@ $app->post('/endpoint/:name', function($name){
 			$visit['ctime'] = R::isoDateTime();
 			$vid = R::store($visit);
 
+			$count = R::count('visit', ' uid = ? ', [ $uid ]);
+
 			if($vid != 0){
 				echo json_encode(
 					array(
 						"result" => "ok",
-						"message" => "User successfully visited endpoint!"
+						"message" => "User successfully visited endpoint!",
+						"count" => $count
 					)
 				);
 			}else{
