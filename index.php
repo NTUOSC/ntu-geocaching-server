@@ -166,14 +166,23 @@ $app->post('/endpoint', function(){
 
 		$endpoint['key'] = sha1($_POST['key']);
 
-		R::store( $endpoint );
+		$id = R::store( $endpoint );
 
-		echo json_encode(
-			array(
-				"result" => "ok",
-				"message" => "Endpoint ".$action."ed sucessfully!"
-			)
-		);
+		if($id != 0){
+			echo json_encode(
+				array(
+					"result" => "ok",
+					"message" => "Endpoint ".$action."ed sucessfully!"
+				)
+			);
+		}else{
+			echo json_encode(
+				array(
+					"result" => "error",
+					"message" => "Database error occured!"
+				)
+			);
+		}
 
 	}else{
 
