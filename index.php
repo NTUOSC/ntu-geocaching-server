@@ -69,7 +69,7 @@ $app->post('/endpoint/:name', function($name){
 
 	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
 
-	if( !( isset($_POST['key']) && isset($_POST['cuid']) ) ){
+	if( !( isset($_POST['auth']) && isset($_POST['cuid']) ) ){
 
 		// Missing parameters
 
@@ -81,7 +81,7 @@ $app->post('/endpoint/:name', function($name){
 
 		header("HTTP/1.1 400 Bad Request");
 
-	}else if( sha1($_POST['key']) != $endpoint['key'] ){
+	}else if( sha1($_POST['auth']) != $endpoint['key'] ){
 
 		// Invalid endpoint key
 
