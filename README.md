@@ -17,6 +17,8 @@ Before you get started, you'll have to set up the following two things
 
 - **Database**: The system uses database to store records of endpoints, users, and visits. The **DATABASE_URL** should be set in environment variables. For Heroku Postgres users, just make sure you've added the database addon.
 
+- **Dependencies**: The system uses **Composer** to manage library dependencies. Make sure you have **Composer** installed, and run the command **composer install** in Terminal.
+
 - **Master Key**: The master key is used to identify the system manager. The key should be encrypted using SHA1, named **MASTER_KEY_SHA1** located in environment variables.
 
 ## Usage
