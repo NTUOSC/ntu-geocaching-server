@@ -43,8 +43,26 @@ $app->get('/', function(){
 
 $app->get('/endpoint/:name', function($name){
 
+	// Show endpoint statistics
 
+	$endpoint = R::findOne('endpoint', ' name = ? ', [$name]);
 
+	if(!empty($endpoint)){
+
+		$count = R::count('visit', ' eid = ? ', [ $endpoint['id'] ]);
+
+		echo json_encode(
+			array(
+				"result" => "ok",
+				"count" => $count
+			)
+		);
+
+	}else{
+
+		header("HTTP/1.1 404 Not Found");
+
+	}
 });
 
 $app->post('/endpoint/:name', function($name){
