@@ -43,7 +43,7 @@ $app->get('/', function(){
 
 $app->get('/endpoint/:name', function($name){
 
-	
+
 
 });
 
@@ -80,6 +80,7 @@ $app->post('/endpoint/:name', function($name){
 
 			$user = R::dispense('user');
 			$user['cuid'] = $_POST['cuid'];
+			$user['ctime'] = R::isoDateTime();
 			$uid = R::store($user);
 
 		}else{
@@ -99,6 +100,7 @@ $app->post('/endpoint/:name', function($name){
 			$visit = R::dispense('visit');
 			$visit['uid'] = $uid;
 			$visit['eid'] = $endpoint['id'];
+			$visit['ctime'] = R::isoDateTime();
 			$vid = R::store($visit);
 
 			if($vid != 0){
