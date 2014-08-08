@@ -64,7 +64,7 @@ $app->post('/endpoint', function(){
 
 			// Updating existing endpoint
 
-			$action = 'update';
+			$action = 'updat';
 			$endpoint = R::load('endpoint', $endpoint['id']);
 
 		}
