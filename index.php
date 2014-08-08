@@ -32,6 +32,13 @@ $app = new \Slim\Slim();
 
 $app->get('/', function(){
 
+	echo json_encode(
+		array(
+			"status" => "ok",
+			"message" => "Hello World!"
+		)
+	);
+
 });
 
 $app->run();
