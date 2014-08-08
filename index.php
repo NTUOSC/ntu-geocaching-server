@@ -164,7 +164,7 @@ $app->post('/endpoint', function(){
 
 		}
 
-		$endpoint['key'] = $_POST['key'];
+		$endpoint['key'] = sha1($_POST['key']);
 
 		R::store( $endpoint );
 
