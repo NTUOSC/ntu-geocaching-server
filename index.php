@@ -41,6 +41,12 @@ $app->get('/', function(){
 
 });
 
+$app->get('/endpoint/:name', function($name){
+
+	
+
+});
+
 $app->post('/endpoint/:name', function($name){
 
 	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
