@@ -6,7 +6,7 @@ require 'rb.php';
 // create a connection string from the PG database URL and then use it to connect
 // https://gist.github.com/kogcyc/7879293
 
-$url=parse_url(getenv("HEROKU_POSTGRESQL_AMBER_URL"));
+$url=parse_url(getenv("DATABASE_URL"));
 
 $host = $url["host"];
 $port = $url["port"];
