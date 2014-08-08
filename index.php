@@ -92,6 +92,7 @@ $app->post('/endpoint/:name', function($name){
 		}
 
 		$visit = R::findOne('visit', ' cuid = ? AND eid = ? ', [ $id, $endpoint['id'] ] );
+		$count = R::count('visit', ' uid = ? ', [ $uid ]);
 
 		if(empty($visit)){
 
@@ -103,7 +104,7 @@ $app->post('/endpoint/:name', function($name){
 			$visit['ctime'] = R::isoDateTime();
 			$vid = R::store($visit);
 
-			$count = R::count('visit', ' uid = ? ', [ $uid ]);
+			$count++;
 
 			if($vid != 0){
 				echo json_encode(
@@ -129,7 +130,8 @@ $app->post('/endpoint/:name', function($name){
 			echo json_encode(
 				array(
 					"result" => "notice",
-					"message" => "User came before!"
+					"message" => "User came before!",
+					"count" => $count
 				)
 			);
 
