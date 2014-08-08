@@ -41,6 +41,93 @@ $app->get('/', function(){
 
 });
 
+$app->post('/endpoint/:name', function($name){
+
+	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
+
+	if( !( isset($_POST['key']) && isset($_POST['cuid']) ) ){
+
+		// Missing parameters
+
+		header("HTTP/1.1 400 Bad Request");
+
+	}else if(empty($endpoint)){
+
+		// Invalid endpoint name
+
+		header("HTTP/1.1 400 Bad Request");
+
+	}else if( sha1($_POST['key']) != $endpoint['key'] ){
+
+		// Invalid endpoint key
+
+		header("HTTP/1.1 403 Forbidden");
+
+	}else{
+
+		$user = R::findOne('user', ' cuid = ? ', [ $_POST['cuid'] ]);
+		$uid = 0;
+
+		if(empty($user)){
+
+			// Newcoming user for system, first endpoint touched, add to DB
+
+			$user = R::dispense('user');
+			$user['cuid'] = $_POST['cuid'];
+			$uid = R::store($user);
+
+		}else{
+
+			// Existing user
+
+			$uid = $user['id'];
+
+		}
+
+		$visit = R::findOne('visit', ' cuid = ? AND eid = ? ', [ $id, $endpoint['id'] ] );
+
+		if(empty($visit)){
+
+			// Newcoming user for endpoint
+
+			$visit = R::dispense('visit');
+			$visit['uid'] = $uid;
+			$visit['eid'] = $endpoint['id'];
+			$vid = R::store($visit);
+
+			if($vid != 0){
+				echo json_encode(
+					array(
+						"result" => "ok",
+						"message" => "User successfully visited endpoint!"
+					)
+				);
+			}else{
+				echo json_encode(
+					array(
+						"result" => "error",
+						"message" => "Database error occured!"
+					)
+				);
+			}
+
+		}else{
+
+			// Returning user for endpoint
+
+			echo json_encode(
+				array(
+					"result" => "notice",
+					"message" => "User came before!"
+				)
+			);
+
+		}
+
+	}
+
+});
+
 $app->post('/endpoint', function(){
 
 	// MASTER_KEY_SHA1 should be a SHA1 string and set in ENV vars
