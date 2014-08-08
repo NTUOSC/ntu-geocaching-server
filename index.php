@@ -1,5 +1,11 @@
 <?php
 
+header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
+header('Access-Control-Allow-Credentials: true');
+
+// Set proper Content-Type and charset
+header('Content-Type: application/json; charset=utf-8');
+
 require 'vendor/autoload.php';
 require 'rb.php';
 
