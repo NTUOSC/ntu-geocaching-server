@@ -192,7 +192,7 @@ $app->post('/endpoint', function() use($app) {
 	// MASTER_KEY_SHA1 should be a SHA1 string and set in ENV vars
 	// It is used to manage endpoints
 
-	if( sha1($_POST['auth']) === getenv("MASTER_KEY_SHA1") ){
+	if( sha1($_POST['auth']) == getenv("MASTER_KEY_SHA1") ){
 
 		$endpoint = R::findOne('endpoint', ' name = ? ', [ $_POST['name'] ]);
 
