@@ -61,6 +61,13 @@ $app->get('/endpoint/:name', function($name){
 
 		header("HTTP/1.1 404 Not Found");
 
+		echo json_encode(
+			array(
+				"result" => "error",
+				"message" => "Not Found"
+			)
+		);
+
 	}
 });
 
@@ -74,17 +81,38 @@ $app->post('/endpoint/:name', function($name){
 
 		header("HTTP/1.1 400 Bad Request");
 
+		echo json_encode(
+			array(
+				"result" => "error",
+				"message" => "Missing Parameters"
+			)
+		);
+
 	}else if(empty($endpoint)){
 
 		// Invalid endpoint name
 
 		header("HTTP/1.1 400 Bad Request");
 
+		echo json_encode(
+			array(
+				"result" => "error",
+				"message" => "Invalid Endpoint"
+			)
+		);
+
 	}else if( sha1($_POST['auth']) != $endpoint['key'] ){
 
 		// Invalid endpoint key
 
 		header("HTTP/1.1 403 Forbidden");
+
+		echo json_encode(
+			array(
+				"result" => "error",
+				"message" => "Invalid Key"
+			)
+		);
 
 	}else{
 
@@ -211,6 +239,13 @@ $app->post('/endpoint', function(){
 		// Wrong key
 
 		header("HTTP/1.1 403 Forbidden");
+
+		echo json_encode(
+			array(
+				"result" => "error",
+				"message" => "Invalid Key"
+			)
+		);
 
 	}
 
