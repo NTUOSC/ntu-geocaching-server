@@ -29,7 +29,6 @@ $app = new \Slim\Slim();
 $app->response->headers->set('Access-Control-Allow-Origin', '*');
 $app->response->headers->set('Content-Type', 'application/json; charset=utf-8');
 
-
 $app->get('/', function(){
 
 	echo json_encode(
@@ -41,7 +40,7 @@ $app->get('/', function(){
 
 });
 
-$app->get('/endpoint/:name', function($name){
+$app->get('/endpoint/:name', function($name) use($app) {
 
 	// Show endpoint statistics
 
@@ -60,19 +59,19 @@ $app->get('/endpoint/:name', function($name){
 
 	}else{
 
-		header("HTTP/1.1 404 Not Found");
-
-		echo json_encode(
+		$message = json_encode(
 			array(
 				"result" => "error",
 				"message" => "Not Found"
 			)
 		);
 
+		$app->halt(404, $message);
+
 	}
 });
 
-$app->post('/endpoint/:name', function($name){
+$app->post('/endpoint/:name', function($name) use($app) {
 
 	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
 
@@ -80,40 +79,40 @@ $app->post('/endpoint/:name', function($name){
 
 		// Missing parameters
 
-		header("HTTP/1.1 400 Bad Request");
-
-		echo json_encode(
+		$message = json_encode(
 			array(
 				"result" => "error",
 				"message" => "Missing Parameters"
 			)
 		);
 
+		$app->halt(400, $message);
+
 	}else if(empty($endpoint)){
 
 		// Invalid endpoint name
 
-		header("HTTP/1.1 400 Bad Request");
-
-		echo json_encode(
+		$message =  json_encode(
 			array(
 				"result" => "error",
 				"message" => "Invalid Endpoint"
 			)
 		);
 
+		$app->halt(400, $message);
+
 	}else if( sha1($_POST['auth']) != $endpoint['key'] ){
 
 		// Invalid endpoint key
 
-		header("HTTP/1.1 403 Forbidden");
-
-		echo json_encode(
+		$message = json_encode(
 			array(
 				"result" => "error",
 				"message" => "Invalid Key"
 			)
 		);
+
+		$app->halt(403, $message);
 
 	}else{
 
@@ -161,12 +160,13 @@ $app->post('/endpoint/:name', function($name){
 					)
 				);
 			}else{
-				echo json_encode(
+				$message =  json_encode(
 					array(
 						"result" => "error",
 						"message" => "Database error occured!"
 					)
 				);
+				$app->halt(500, $message);
 			}
 
 		}else{
@@ -187,7 +187,7 @@ $app->post('/endpoint/:name', function($name){
 
 });
 
-$app->post('/endpoint', function(){
+$app->post('/endpoint', function() use($app) {
 
 	// MASTER_KEY_SHA1 should be a SHA1 string and set in ENV vars
 	// It is used to manage endpoints
@@ -227,26 +227,27 @@ $app->post('/endpoint', function(){
 				)
 			);
 		}else{
-			echo json_encode(
+			$message = json_encode(
 				array(
 					"result" => "error",
 					"message" => "Database error occured!"
 				)
 			);
+			$app->halt(500, $message);
 		}
 
 	}else{
 
 		// Wrong key
 
-		header("HTTP/1.1 403 Forbidden");
-
-		echo json_encode(
+		$message = json_encode(
 			array(
 				"result" => "error",
 				"message" => "Invalid Key"
 			)
 		);
+
+		$app->halt(403, $message);
 
 	}
 
