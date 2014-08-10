@@ -1,10 +1,5 @@
 <?php
 
-header('Access-Control-Allow-Origin: *');
-
-// Set proper Content-Type and charset
-header('Content-Type: application/json; charset=utf-8');
-
 require 'vendor/autoload.php';
 require 'rb.php';
 
@@ -28,6 +23,12 @@ $connect_string = $connect_string . "dbname='" . $dbname . "' ";
 R::setup($connect_string);
 
 $app = new \Slim\Slim();
+
+// Set proper Content-Type and charset
+
+$app->response->headers->set('Access-Control-Allow-Origin', '*');
+$app->response->headers->set('Content-Type', 'application/json; charset=utf-8');
+
 
 $app->get('/', function(){
 
