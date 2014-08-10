@@ -243,9 +243,7 @@ $app->post('/endpoint', function() use($app) {
 		$message = json_encode(
 			array(
 				"result" => "error",
-				"message" => "Invalid Key",
-				"POST" => $_POST,
-				"key" => getenv("MASTER_KEY_SHA1")
+				"message" => "Invalid Key"
 			)
 		);
 
