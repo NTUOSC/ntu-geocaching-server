@@ -75,6 +75,11 @@ $app->post('/endpoint/:name', function($name) use($app) {
 
 	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
 
+	echo 'auth: ['.$_POST['auth'].'], ';
+	echo 'cuid: ['.$_POST['cuid'].'], F: ';
+	echo $app->request->post('auth');
+	echo ', '.$app->request->post('cuid');
+
 	if( !( isset($_POST['auth']) && isset($_POST['cuid']) ) ){
 
 		// Missing parameters
