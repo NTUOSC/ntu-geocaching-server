@@ -71,15 +71,9 @@ $app->get('/endpoint/:name', function($name) use($app) {
 	}
 });
 
-$app->post('/endpoint/:name', function($name) use($app) {
+$app->post('/checkin', function() use($app) {
 
-	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
-
-	echo 'auth: ['.$_POST['auth'].'], ';
-	echo 'cuid: ['.$_POST['cuid'].'], F: ';
-	echo $app->request->post('auth');
-	echo ', '.$app->request->post('cuid');
-	exit();
+	$endpoint = R::findOne('endpoint', ' name = ? ', [ $app->request->post('name') ]);
 
 	if( !( isset($_POST['auth']) && isset($_POST['cuid']) ) ){
 
