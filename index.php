@@ -74,6 +74,8 @@ $app->get('/endpoint/:name', function($name) use($app) {
 $app->post('/checkin', function() use($app) {
 
 	$endpoint = R::findOne('endpoint', ' name = ? ', [ $app->request->post('name') ]);
+	print_r($endpoint);
+	exit();
 
 	if( !( isset($_POST['auth']) && isset($_POST['cuid']) ) ){
 
