@@ -1,7 +1,7 @@
 NTU Geocaching Server
 ===========
 
-NTU Geocaching Server is a RESTful API backend originally used in the Freshman Club Fair of National Taiwan University.
+NTU Geocaching Server is a RESTful API backend originally used in the Freshmen Club Fair of National Taiwan University.
 
 The system enables participants to swipe their student ID card through NFC card readers located at booth of cooperating clubs. After visiting a certain number of booths, participants can get a special gift.
 
@@ -48,6 +48,6 @@ Before you get started, you'll have to set up the following two things
 
 		GET /endpoint/[ Name of Endpoint ] HTTP/1.1
 
-## Contributer
+## Contributor
 
 - Shouko <shouko@ntuosc.org>
