@@ -136,7 +136,7 @@ $app->post('/endpoint/:name', function($name) use($app) {
 
 		}
 
-		$visit = R::findOne('visit', ' cuid = ? AND eid = ? ', [ $uid, $endpoint['id'] ] );
+		$visit = R::findOne('visit', ' uid = ? AND eid = ? ', [ $uid, $endpoint['id'] ] );
 		$count = R::count('visit', ' uid = ? ', [ $uid ]);
 
 		if(empty($visit)){
