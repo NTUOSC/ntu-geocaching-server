@@ -71,11 +71,9 @@ $app->get('/endpoint/:name', function($name) use($app) {
 	}
 });
 
-$app->post('/checkin', function() use($app) {
+$app->post('/endpoint/:name', function($name) use($app) {
 
-	$endpoint = R::findOne('endpoint', ' name = ? ', [ $app->request->post('name') ]);
-	print_r($endpoint);
-	exit();
+	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
 
 	if( !( isset($_POST['auth']) && isset($_POST['cuid']) ) ){
 
@@ -84,9 +82,7 @@ $app->post('/checkin', function() use($app) {
 		$message = json_encode(
 			array(
 				"result" => "error",
-				"message" => "Missing Parameters",
-				"auth" => $_POST['auth'],
-				"cuid" => $_POST['cuid']
+				"message" => "Missing Parameters"
 			)
 		);
 
