@@ -79,6 +79,7 @@ $app->post('/endpoint/:name', function($name) use($app) {
 	echo 'cuid: ['.$_POST['cuid'].'], F: ';
 	echo $app->request->post('auth');
 	echo ', '.$app->request->post('cuid');
+	exit();
 
 	if( !( isset($_POST['auth']) && isset($_POST['cuid']) ) ){
 
