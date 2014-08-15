@@ -82,7 +82,9 @@ $app->post('/endpoint/:name', function($name) use($app) {
 		$message = json_encode(
 			array(
 				"result" => "error",
-				"message" => "Missing Parameters"
+				"message" => "Missing Parameters",
+				"auth" => $_POST['auth'],
+				"cuid" => $_POST['cuid']
 			)
 		);
 
