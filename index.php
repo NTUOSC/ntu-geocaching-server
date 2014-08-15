@@ -71,9 +71,9 @@ $app->get('/endpoint/:name', function($name) use($app) {
 	}
 });
 
-$app->post('/checkin', function() use($app) {
+$app->post('/endpoint/:name', function($name) use($app) {
 
-	$endpoint = R::findOne('endpoint', ' name = ? ', [ $app->request->post('name') ]);
+	$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
 
 	if( !( isset($_POST['auth']) && isset($_POST['cuid']) ) ){
 
@@ -196,7 +196,7 @@ $app->post('/endpoint', function() use($app) {
 
 	if( sha1($_POST['auth']) == getenv("MASTER_KEY_SHA1") ){
 
-		$endpoint = R::findOne('endpoint', ' name = ? ', [ $_POST['name'] ]);
+		$endpoint = R::findOne('endpoint', ' name = ? ', [ $name ]);
 
 		$action = '';
 
