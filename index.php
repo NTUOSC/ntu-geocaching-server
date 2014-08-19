@@ -272,7 +272,13 @@ $app->get('/user/:cuid', function($cuid){
 
 	if(empty($user)){
 
-		$message = "User not found!";
+		$message = json_encode(
+			array(
+				"result" => "error",
+				"message" => "User not found!"
+			)
+		);
+
 		$app->halt(404, $message);
 
 	}else{
