@@ -31,10 +31,19 @@ $app->response->headers->set('Content-Type', 'application/json; charset=utf-8');
 
 $app->get('/', function(){
 
+	$endpoints = R::findAll('endpoint');
+
+	$result = array();
+
+	foreach($endpoints as $endpoint){
+		$count = R::count('visit', ' eid = ? ', [ $endpoint['id'] ] );
+		$result[] = array($endpoint['id'], $endpoint['name'], $count);
+	}
+
 	echo json_encode(
 		array(
 			"status" => "ok",
-			"message" => "Hello World!"
+			"data" => $result
 		)
 	);
 
