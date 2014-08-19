@@ -266,6 +266,40 @@ $app->post('/endpoint', function() use($app) {
 
 });
 
+$app->get('/user/:cuid', function($cuid){
+
+	$user = R::findOne('user', ' cuid = ? ', [ $cuid ]);
+
+	if(empty($user)){
+
+		$message = "User not found!";
+		$app->halt(404, $message);
+
+	}else{
+
+		$visits = R::findAll('visit', ' uid = ? ', [ $user['id'] ] );
+		$visited_endpoints = array();
+
+		foreach($visits as $visit){
+			$endpoint = R::findOne('endpoint', ' id = ? ', [ $visit['eid'] ] );
+			$visited_endpoints[] = array(
+				"name" => $endpoint['name'],
+				"ctime" => $visit['ctime']
+			);
+		}
+
+		echo json_encode(
+			array(
+				"result" => "ok",
+				"count" => sizeof($visits),
+				"visited" => $visited_endpoints
+			)
+		);
+
+	}
+
+});
+
 $app->run();
 
 ?>
