@@ -266,6 +266,19 @@ $app->post('/endpoint', function() use($app) {
 
 });
 
+$app->get('/user', function(){
+
+	$user = R::findAll('user');
+
+	echo json_encode(
+		array(
+			"result" => "ok",
+			"data" => $user
+		)
+	);
+
+});
+
 $app->get('/user/:cuid', function($cuid){
 
 	$user = R::findOne('user', ' cuid = ? ', [ $cuid ]);
