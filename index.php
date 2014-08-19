@@ -268,12 +268,20 @@ $app->post('/endpoint', function() use($app) {
 
 $app->get('/user', function(){
 
-	$user = R::findAll('user');
+	$users = R::findAll('user');
+	$users_data = array();
+
+	foreach($users as $user){
+		$users_data[] = array(
+			"id" => $user['id'],
+			"cuid" => $user['cuid']
+		);
+	}
 
 	echo json_encode(
 		array(
 			"result" => "ok",
-			"data" => $user
+			"data" => $users_data
 		)
 	);
 
