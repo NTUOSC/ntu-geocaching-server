@@ -37,7 +37,11 @@ $app->get('/', function(){
 
 	foreach($endpoints as $endpoint){
 		$count = R::count('visit', ' eid = ? ', [ $endpoint['id'] ] );
-		$result[] = array($endpoint['id'], $endpoint['name'], $count);
+		$result[] = array(
+			'id' => $endpoint['id'],
+			'name' => $endpoint['name'],
+			'count' => $count
+		);
 	}
 
 	echo json_encode(
