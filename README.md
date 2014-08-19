@@ -50,4 +50,4 @@ Before you get started, you'll have to set up the following two things
 
 ## Contributor
 
-- Shouko <shouko@ntuosc.org>
+- [Shouko](https://github.com/Shouko)
