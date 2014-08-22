@@ -457,6 +457,16 @@ $app->post('/redeem', function() use($app) {
 				);
 				$app->halt(400, $message);
 
+			}else if(	getenv("REDEEM_REQ") > R::count('visit', ' uid = ? ', [ $user['id'] ] )){
+
+				$message = json_encode(
+					array(
+						"result" => "error",
+						"message" => "User did not reach goal yet"
+					)
+				);
+				$app->halt(400, $message);
+
 			}else{
 
 				// User is in db
