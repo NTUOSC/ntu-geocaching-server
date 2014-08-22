@@ -404,6 +404,96 @@ $app->get('/user/:cuid', function($cuid){
 
 });
 
+$app->post('/redeem', function() use($app) {
+	if( isset($_POST['cuid']) && isset($_POST['auth']) ){
+
+		$auth_success = false;
+		$auth_identidy = "";
+
+		if( sha1($_POST['auth']) == getenv("MASTER_KEY_SHA1") ){
+			$auth_success = true;
+			$auth_identity = 0;
+		}else if( isset($_POST['name']) ){
+			$endpoint = R::findOne('endpoint', ' key = ? AND name = ? ', [ $_POST['auth'], $_POST['name'] ]);
+			if(!empty($endpoint)){
+				$auth_success = true;
+				$auth_identity = $endpoint['id'];
+			}
+		}
+
+		if($auth_success === true){
+
+			$user = R::findOne('user', ' cuid = ? ', [ $_POST['cuid'] ]);
+
+			if(empty($user)){
+
+				$message = json_encode(
+					array(
+						"result" => "error",
+						"message" => "User does not exist"
+					)
+				);
+				$app->halt(400, $message);
+
+			}else if($user['redeem'] == 1){
+
+				// Already redeemed
+
+				$message = json_encode(
+					array(
+						"result" => "error",
+						"message" => "Already redeemed"
+					)
+				);
+				$app->halt(400, $message);
+
+			}else{
+
+				// User is in db
+				$user = R::load('user', $user['id']);
+
+			}
+
+			$user['rtime'] = R::isoDateTime();
+			$user['redeem'] = 1;
+			$user['redeem_by'] = $auth_identity;
+
+			R::store($user);
+
+			echo json_encode(
+				array(
+					"result" => "ok",
+					"message" => "Redeemed successfully!"
+				)
+			);
+
+		}else{
+
+			$message = json_encode(
+				array(
+					"result" => "error",
+					"message" => "Invalid Key"
+				)
+			);
+
+			$app->halt(403, $message);
+
+		}
+
+	}else{
+
+		$message = json_encode(
+			array(
+				"result" => "error",
+				"message" => "Missing Parameters"
+			)
+		);
+
+		$app->halt(400, $message);
+
+	}
+});
+
 $app->run();
 
 ?>
