@@ -131,6 +131,8 @@ $app->post('/endpoint/:name', function($name) use($app) {
 
 		$user = R::findOne('user', ' cuid = ? ', [ $_POST['cuid'] ]);
 		$uid = 0;
+		$is_registered = 0;
+		$can_redeem = 0;
 
 		if(empty($user)){
 
@@ -146,6 +148,11 @@ $app->post('/endpoint/:name', function($name) use($app) {
 			// Existing user
 
 			$uid = $user['id'];
+
+			if($user['data'] != ""){
+				// User has data
+				$is_registered = 1;
+			}
 
 		}
 
@@ -164,12 +171,19 @@ $app->post('/endpoint/:name', function($name) use($app) {
 
 			$count++;
 
+			if($count >= getenv("REDEEM_REQ")){
+				// Goal reached
+				$can_redeem = 1;
+			}
+
 			if($vid != 0){
 				echo json_encode(
 					array(
 						"result" => "ok",
 						"message" => "User successfully visited endpoint!",
-						"count" => $count
+						"count" => $count,
+						"is_registered" => $is_registered,
+						"can_redeem" => $can_redeem
 					)
 				);
 			}else{
@@ -190,7 +204,9 @@ $app->post('/endpoint/:name', function($name) use($app) {
 				array(
 					"result" => "notice",
 					"message" => "User came before!",
-					"count" => $count
+					"count" => $count,
+					"is_registered" => $is_registered,
+					"can_redeem" => $can_redeem
 				)
 			);
 
@@ -396,6 +412,8 @@ $app->get('/user/:cuid', function($cuid){
 			array(
 				"result" => "ok",
 				"count" => sizeof($visits),
+				"is_registered" => $user['data'] == '' ? 0 : 1,
+				"can_redeem" => sizeof($visits) >= getenv("REDEEM_REQ") ? 1 : 0,
 				"visited" => $visited_endpoints
 			)
 		);
