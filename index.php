@@ -304,7 +304,7 @@ $app->post('/user', function(){
 
 			$user['mtime'] = R::isoDateTime();
 			$user['data'] = $_POST['data'];
-			$user['by'] = $auth_identity;
+			$user['data_by'] = $auth_identity;
 
 			R::store($user);
 
