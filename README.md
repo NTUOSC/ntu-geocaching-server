@@ -44,6 +44,36 @@ Before you get started, you'll have to set up the following two things
 	- **cuid**: Identification of participant, usually UID of NFC card
 
 
+- **Register user info**: To add an user's personal info into database
+
+		POST /user HTTP/1.1
+
+	Notice: This registration process is not required prior to any check-in action, it can be done any time before redeeming prize.
+
+	The following POST parameters are available:
+
+	- **name**: Name of endpoint, optional, required only if the registration process is done by endpoint
+
+	- **auth**: Master key, or key to endpoint if the parameter above is specified, in plain text
+
+	- **cuid**: Identification of participant, usually UID of NFC card
+
+	- **data**: Personal info of participant, may be student ID number, or a string at any length
+
+- **Reddem prize for user**: To redeem prize for user
+
+		POST /redeem HTTP/1.1
+
+	Notice: A registration process should be done prior to this redeem action
+
+	The following POST parameters are available:
+
+	- **name**: Name of endpoint, optional, required only if the redeem process is done by endpoint
+
+	- **auth**: Master key, or key to endpoint if the parameter above is specified, in plain text
+
+	- **cuid**: Identification of participant, usually UID of NFC card
+
 - **Get statistics for endpoint**: To get statistics for specified endpoint
 
 		GET /endpoint/[ Name of Endpoint ] HTTP/1.1
