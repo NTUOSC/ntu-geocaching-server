@@ -266,6 +266,83 @@ $app->post('/endpoint', function() use($app) {
 
 });
 
+$app->post('/user', function(){
+
+	if( isset($_POST['cuid']) && isset($_POST['auth']) && isset($_POST['data']) ){
+
+		$auth_success = false;
+		$auth_identidy = "";
+
+		if( sha1($_POST['auth']) == getenv("MASTER_KEY_SHA1") ){
+			$auth_success = true;
+			$auth_identity = 0;
+		}else if( isset($_POST['name']) ){
+			$endpoint = R::findOne('endpoint', ' key = ? AND name = ? ', [ $_POST['auth'], $_POST['name'] ]);
+			if(!empty($endpoint)){
+				$auth_success = true;
+				$auth_identity = $endpoint['id'];
+			}
+		}
+
+		if($auth_success === true){
+
+			$user = R::findOne('user', ' cuid = ? ', [ $_POST['cuid'] ]);
+
+			if(!empty($user)){
+
+				// User is in db
+				$user = R::load('user', $user['id']);
+
+			}else{
+
+				// User is not in db
+				$user = R::dispense('user');
+				$user['cuid'] = $_POST['cuid'];
+				$user['ctime'] = R::isoDateTime();
+
+			}
+
+			$user['mtime'] = R::isoDateTime();
+			$user['data'] = $_POST['data'];
+			$user['by'] = $auth_identity;
+
+			R::store($user);
+
+			echo json_encode(
+				array(
+					"result" => "ok",
+					"message" => "Data added successfully!"
+				)
+			);
+
+		}else{
+
+			$message = json_encode(
+				array(
+					"result" => "error",
+					"message" => "Invalid Key"
+				)
+			);
+
+			$app->halt(403, $message);
+
+		}
+
+	}else{
+
+		$message = json_encode(
+			array(
+				"result" => "error",
+				"message" => "Missing Parameters"
+			)
+		);
+
+		$app->halt(400, $message);
+
+	}
+
+});
+
 $app->get('/user', function(){
 
 	$users = R::findAll('user');
