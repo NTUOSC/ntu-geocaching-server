@@ -21,6 +21,8 @@ Before you get started, you'll have to set up the following two things
 
 - **Master Key**: The master key is used to identify the system manager. The key should be encrypted using SHA1, named **MASTER_KEY_SHA1** located in environment variables.
 
+- **Goal**: An integer greater than 0 should be set in environment variables named **REDEEM_REQ** to determine how many endpoint should user visit before redeeming a prize.
+
 ## Usage
 
 - **Add / Update an endpoint**: To add an endpoint, or update it's key
