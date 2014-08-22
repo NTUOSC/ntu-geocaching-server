@@ -447,6 +447,16 @@ $app->post('/redeem', function() use($app) {
 				);
 				$app->halt(400, $message);
 
+			}else if($user['data'] == ''){
+
+				$message = json_encode(
+					array(
+						"result" => "error",
+						"message" => "Data not provided yet"
+					)
+				);
+				$app->halt(400, $message);
+
 			}else{
 
 				// User is in db
