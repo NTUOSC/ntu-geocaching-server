@@ -74,9 +74,21 @@ Before you get started, you'll have to set up the following two things
 
 	- **cuid**: Identification of participant, usually UID of NFC card
 
+- **Get overall statistics**: To get an overall statistic
+
+		GET / HTTP/1.1
+
 - **Get statistics for endpoint**: To get statistics for specified endpoint
 
 		GET /endpoint/[ Name of Endpoint ] HTTP/1.1
+
+- **Get a list of all players**: To get the list of players
+
+		GET /user HTTP/1.1
+
+- **Get statistics for specified user**: To get statistics for specified user
+
+		GET /user/[ Identification of User ] HTTP/1.1
 
 ## Contributor
 
