@@ -427,7 +427,7 @@ $app->post('/redeem', function() use($app) {
 			$auth_success = true;
 			$auth_identity = 0;
 		}else if( isset($_POST['name']) ){
-			$endpoint = R::findOne('endpoint', ' key = ? AND name = ? ', [ $_POST['auth'], $_POST['name'] ]);
+			$endpoint = R::findOne('endpoint', ' key = ? AND name = ? ', [ sha1($_POST['auth']), $_POST['name'] ]);
 			if(!empty($endpoint)){
 				$auth_success = true;
 				$auth_identity = $endpoint['id'];
