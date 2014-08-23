@@ -171,11 +171,6 @@ $app->post('/endpoint/:name', function($name) use($app) {
 
 			$count++;
 
-			if($count >= getenv("REDEEM_REQ")){
-				// Goal reached
-				$can_redeem = 1;
-			}
-
 			if($vid != 0){
 				echo json_encode(
 					array(
@@ -183,7 +178,7 @@ $app->post('/endpoint/:name', function($name) use($app) {
 						"message" => "User successfully visited endpoint!",
 						"count" => $count,
 						"is_registered" => $is_registered,
-						"can_redeem" => $can_redeem
+						"can_redeem" => $count >= getenv("REDEEM_REQ") ? 1 : 0
 					)
 				);
 			}else{
@@ -206,7 +201,7 @@ $app->post('/endpoint/:name', function($name) use($app) {
 					"message" => "User came before!",
 					"count" => $count,
 					"is_registered" => $is_registered,
-					"can_redeem" => $can_redeem
+					"can_redeem" => $count >= getenv("REDEEM_REQ") ? 1 : 0
 				)
 			);
 
